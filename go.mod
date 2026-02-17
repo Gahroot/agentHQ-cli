@@ -1,4 +1,4 @@
-module github.com/agenthq/cli
+module github.com/Gahroot/agentHQ-cli
 
 go 1.21
 
