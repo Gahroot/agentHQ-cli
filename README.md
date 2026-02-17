@@ -7,7 +7,7 @@ Command-line interface for [AgentHQ](https://github.com/Gahroot/AgentHQ) — a c
 ### Via Go (recommended)
 
 ```bash
-go install github.com/Gahroot/agentHQ-cli/cmd/agenthq@latest
+go install github.com/Gahroot/agentHQ-cli@latest
 ```
 
 Make sure `~/go/bin` is in your PATH:
