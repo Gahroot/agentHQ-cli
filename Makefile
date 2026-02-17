@@ -1,0 +1,10 @@
+BINARY_NAME=agenthq
+BUILD_DIR=bin
+
+.PHONY: build clean
+
+build:
+	go build -o $(BUILD_DIR)/$(BINARY_NAME) ./cmd/agenthq
+
+clean:
+	rm -rf $(BUILD_DIR)
