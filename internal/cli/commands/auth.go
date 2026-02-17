@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/agenthq/cli/internal/common/client"
-	"github.com/agenthq/cli/internal/common/config"
-	"github.com/agenthq/cli/pkg/output"
+	"github.com/Gahroot/agentHQ-cli/internal/common/client"
+	"github.com/Gahroot/agentHQ-cli/internal/common/config"
+	"github.com/Gahroot/agentHQ-cli/pkg/output"
 	"github.com/spf13/cobra"
 )
 

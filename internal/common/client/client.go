@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"net/url"
 
-	"github.com/agenthq/cli/internal/common/config"
+	"github.com/Gahroot/agentHQ-cli/internal/common/config"
 )
 
 type APIResponse struct {

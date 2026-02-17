@@ -1,8 +1,8 @@
 package cli
 
 import (
-	"github.com/agenthq/cli/internal/cli/commands"
-	"github.com/agenthq/cli/pkg/output"
+	"github.com/Gahroot/agentHQ-cli/internal/cli/commands"
+	"github.com/Gahroot/agentHQ-cli/pkg/output"
 	"github.com/spf13/cobra"
 )
 
