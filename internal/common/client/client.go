@@ -2,6 +2,7 @@ package client
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -79,7 +80,7 @@ func (c *Client) Request(method, path string, body interface{}, query map[string
 		bodyReader = bytes.NewReader(data)
 	}
 
-	req, err := http.NewRequest(method, u.String(), bodyReader)
+	req, err := http.NewRequestWithContext(context.Background(), method, u.String(), bodyReader)
 	if err != nil {
 		return nil, err
 	}
