@@ -25,6 +25,7 @@ func NewNotificationsCmd() *cobra.Command {
 
 func newNotificationsListCmd() *cobra.Command {
 	var notificationType, readStatus string
+	var verbose bool
 
 	cmd := &cobra.Command{
 		Use:   "list",
@@ -59,7 +60,8 @@ func newNotificationsListCmd() *cobra.Command {
 				ID        string `json:"id"`
 				Type      string `json:"type"`
 				Read      bool   `json:"read"`
-				Message   string `json:"message"`
+				Title     string `json:"title"`
+				Body      string `json:"body"`
 				CreatedAt string `json:"created_at"`
 			}
 			if err := json.Unmarshal(resp.Data, &notifications); err != nil {
@@ -72,20 +74,29 @@ func newNotificationsListCmd() *cobra.Command {
 				return nil
 			}
 
+			maxLen := 50
+			if verbose {
+				maxLen = 200
+			}
+
 			rows := make([][]string, len(notifications))
 			for i, n := range notifications {
-				readStatus := "yes"
-				if !n.Read {
-					readStatus = "no"
+				readStatus := " "
+				if n.Read {
+					readStatus = "✓"
 				}
-				// Truncate message to 50 chars for table display
-				message := n.Message
-				if len(message) > 50 {
-					message = message[:47] + "..."
+				// Use title as primary display, body as fallback
+				displayText := n.Title
+				if displayText == "" && n.Body != "" {
+					displayText = n.Body
 				}
-				rows[i] = []string{n.ID, n.Type, readStatus, message}
+				// Truncate for table display
+				if len(displayText) > maxLen {
+					displayText = displayText[:maxLen-3] + "..."
+				}
+				rows[i] = []string{n.ID[:8], n.Type, readStatus, displayText}
 			}
-			output.PrintTable([]string{"ID", "TYPE", "READ", "MESSAGE"}, rows)
+			output.PrintTable([]string{"ID", "TYPE", "READ", "TITLE"}, rows)
 
 			if resp.Pagination != nil && resp.Pagination.HasMore {
 				fmt.Printf("\nShowing %d of %d notifications. Use --json for full data.\n", len(notifications), resp.Pagination.Total)
@@ -97,6 +108,7 @@ func newNotificationsListCmd() *cobra.Command {
 
 	cmd.Flags().StringVar(&notificationType, "type", "", "Filter by notification type")
 	cmd.Flags().StringVar(&readStatus, "read", "", "Filter by read status (true/false)")
+	cmd.Flags().BoolVar(&verbose, "verbose", false, "Show longer content in table display")
 
 	return cmd
 }
