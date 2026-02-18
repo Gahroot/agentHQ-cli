@@ -60,7 +60,10 @@ func newPostCreateCmd() *cobra.Command {
 			var post struct {
 				ID string `json:"id"`
 			}
-			json.Unmarshal(resp.Data, &post)
+			if err := json.Unmarshal(resp.Data, &post); err != nil {
+				output.PrintError(fmt.Sprintf("Failed to parse response: %v", err))
+				return nil
+			}
 			output.PrintSuccess(fmt.Sprintf("Post created: %s", post.ID))
 			return nil
 		},
@@ -114,7 +117,10 @@ func newPostListCmd() *cobra.Command {
 				Title   string `json:"title"`
 				Content string `json:"content"`
 			}
-			json.Unmarshal(resp.Data, &posts)
+			if err := json.Unmarshal(resp.Data, &posts); err != nil {
+				output.PrintError(fmt.Sprintf("Failed to parse response: %v", err))
+				return nil
+			}
 
 			rows := make([][]string, len(posts))
 			for i, p := range posts {
@@ -163,7 +169,10 @@ func newPostSearchCmd() *cobra.Command {
 				Title   string `json:"title"`
 				Content string `json:"content"`
 			}
-			json.Unmarshal(resp.Data, &posts)
+			if err := json.Unmarshal(resp.Data, &posts); err != nil {
+				output.PrintError(fmt.Sprintf("Failed to parse response: %v", err))
+				return nil
+			}
 
 			rows := make([][]string, len(posts))
 			for i, p := range posts {

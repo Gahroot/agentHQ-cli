@@ -48,7 +48,10 @@ func newChannelListCmd() *cobra.Command {
 				Name string `json:"name"`
 				Type string `json:"type"`
 			}
-			json.Unmarshal(resp.Data, &channels)
+			if err := json.Unmarshal(resp.Data, &channels); err != nil {
+				output.PrintError(fmt.Sprintf("Failed to parse response: %v", err))
+				return nil
+			}
 
 			rows := make([][]string, len(channels))
 			for i, ch := range channels {
@@ -96,7 +99,10 @@ func newChannelCreateCmd() *cobra.Command {
 				ID   string `json:"id"`
 				Name string `json:"name"`
 			}
-			json.Unmarshal(resp.Data, &ch)
+			if err := json.Unmarshal(resp.Data, &ch); err != nil {
+				output.PrintError(fmt.Sprintf("Failed to parse response: %v", err))
+				return nil
+			}
 			output.PrintSuccess(fmt.Sprintf("Channel created: %s (%s)", ch.Name, ch.ID))
 			return nil
 		},

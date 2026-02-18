@@ -101,7 +101,10 @@ func newActivityListCmd() *cobra.Command {
 				Action    string `json:"action"`
 				CreatedAt string `json:"created_at"`
 			}
-			json.Unmarshal(resp.Data, &entries)
+			if err := json.Unmarshal(resp.Data, &entries); err != nil {
+				output.PrintError(fmt.Sprintf("Failed to parse response: %v", err))
+				return nil
+			}
 
 			rows := make([][]string, len(entries))
 			for i, e := range entries {

@@ -47,7 +47,10 @@ func newAgentListCmd() *cobra.Command {
 				Name   string `json:"name"`
 				Status string `json:"status"`
 			}
-			json.Unmarshal(resp.Data, &agents)
+			if err := json.Unmarshal(resp.Data, &agents); err != nil {
+				output.PrintError(fmt.Sprintf("Failed to parse response: %v", err))
+				return nil
+			}
 
 			rows := make([][]string, len(agents))
 			for i, a := range agents {
@@ -85,7 +88,10 @@ func newAgentStatusCmd() *cobra.Command {
 				Status        string `json:"status"`
 				LastHeartbeat string `json:"last_heartbeat"`
 			}
-			json.Unmarshal(resp.Data, &agents)
+			if err := json.Unmarshal(resp.Data, &agents); err != nil {
+				output.PrintError(fmt.Sprintf("Failed to parse response: %v", err))
+				return nil
+			}
 
 			rows := make([][]string, len(agents))
 			for i, a := range agents {

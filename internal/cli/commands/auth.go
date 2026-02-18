@@ -56,7 +56,10 @@ func newLoginCmd() *cobra.Command {
 				AccessToken  string `json:"accessToken"`
 				RefreshToken string `json:"refreshToken"`
 			}
-			json.Unmarshal(resp.Data, &data)
+			if err := json.Unmarshal(resp.Data, &data); err != nil {
+				output.PrintError(fmt.Sprintf("Failed to parse response: %v", err))
+				return nil
+			}
 
 			cfg := &config.Config{
 				HubURL:   hubURL,
@@ -109,7 +112,10 @@ func newLoginAgentCmd() *cobra.Command {
 				} `json:"agent"`
 				APIKey string `json:"apiKey"`
 			}
-			json.Unmarshal(resp.Data, &data)
+			if err := json.Unmarshal(resp.Data, &data); err != nil {
+				output.PrintError(fmt.Sprintf("Failed to parse response: %v", err))
+				return nil
+			}
 
 			cfg := &config.Config{
 				HubURL:  hubURL,
@@ -204,7 +210,7 @@ func newExportCmd() *cobra.Command {
 			// Also output as JSON for programmatic use
 			fmt.Println("\nJSON format:")
 			exportData := map[string]string{
-				"hur_url":  cfg.HubURL,
+				"hub_url":  cfg.HubURL,
 				"api_key":  cfg.APIKey,
 				"agent_id": cfg.AgentID,
 				"org_id":   cfg.OrgID,
